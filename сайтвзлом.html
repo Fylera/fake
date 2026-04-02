@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВНИМАНИЕ: ОШИБКА СИСТЕМЫ</title>
+    <style>
+        body {
+            background-color: black;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .glitch {
+            color: red;
+            font-size: 2em;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: pulse 0.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); shadow: 0 0 10px red; }
+            to { transform: scale(1.05); shadow: 0 0 20px red; }
+        }
+
+        .hacker-img {
+            max-width: 120px;
+            filter: matrix(1, 2, -1, 1, 80, 80); /* Легкое искажение */
+            filter: drop-shadow(0 0 5px #00ff00) grayscale(1) sepia(1) hue-rotate(90deg);
+            margin-bottom: 20px;
+        }
+
+        .details {
+            text-align: left;
+            width: 100%;
+            max-width: 300px;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+
+        .details p { margin: 5px 0; }
+        .red { color: red; font-weight: bold; }
+
+        .progress-container {
+            width: 100%;
+            max-width: 300px;
+            border: 2px solid #333;
+            height: 20px;
+            background: #111;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #00ff00;
+            transition: width 0.2s;
+        }
+
+        /* Изначально скрытый блок с объяснением */
+        #reveal-footer {
+            margin-top: 30px;
+            padding: 15px;
+            border: 2px dashed white;
+            color: white;
+            opacity: 0; /* Скрыто */
+            transform: translateY(20px);
+            transition: all 1s ease-in-out; /* Плавное появление */
+        }
+
+        /* Класс для появления */
+        #reveal-footer.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <div class="glitch">⚠️ SYSTEM CRITICAL ⚠️</div>
+    
+    <img src="hacker.png" alt="[!] WARNING" class="hacker-img" onerror="this.style.display='none'">
+
+    <div class="details">
+        <p>> Соединение... <span style="color:white">OK</span></p>
+        <p>> Поиск аккаунтов... <span class="red">НАЙДЕНО</span></p>
+        <p>> Извлечение переписки... <span class="blink">В ПРОЦЕССЕ</span></p>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="bar"></div>
+    </div>
+    <p id="status">Передача данных: <span id="percent">0</span>%</p>
+
+    <div id="reveal-footer">
+        <h2 style="color: #00ff00; margin-top: 0;">СТОП! ЭТО БЫЛ ТЕСТ ✋</h2>
+        <p>Твое устройство в порядке. Но что если бы это был настоящий хакер?</p>
+        <p><b>Никогда не сканируй чужие QR-коды!</b></p>
+        <p>А теперь подними глаза на выступающего </p>
+
+    <script>
+        let count = 0;
+        const percentEl = document.getElementById('percent');
+        const barEl = document.getElementById('bar');
+        const footerEl = document.getElementById('reveal-footer');
+
+        const counter = setInterval(() => {
+            // Имитация неравномерной загрузки
+            let step = Math.floor(Math.random() * 4) + 1;
+            count += step;
+
+            if (count >= 98) {
+                count = 98;
+                clearInterval(counter);
+                
+                // 1. Меняем цвет процентов на красный
+                percentEl.style.color = "red";
+                percentEl.innerText = "98% (ОШИБКА ДОСТУПА)";
+                
+                // 2. Показываем скрытый текст
+                footerEl.classList.add('visible');
+                
+                // 3. Можно добавить вибрацию (на некоторых телефонах сработает)
+                if (window.navigator.vibrate) {
+                    window.navigator.vibrate([200, 100, 200]);
+                }
+            } else {
+                percentEl.innerText = count;
+                barEl.style.width = count + "%";
+            }
+        }, 150); // Скорость загрузки (примерно 5-7 секунд до конца)
+    </script>
+</body>
+</html>
